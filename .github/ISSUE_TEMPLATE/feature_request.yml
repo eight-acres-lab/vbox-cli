@@ -1,0 +1,39 @@
+name: Feature request
+description: Propose a bcp-sdk SDK, CLI, fixture, or wire-contract feature.
+title: "[Feature]: "
+labels: ["type:feature"]
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - SDK API (Node)
+        - SDK API (Python)
+        - SDK API (Go)
+        - CLI
+        - Wire contract / fixtures
+        - Authentication / transport
+        - Docs / examples
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What integration problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the SDK API, CLI command, or contract change.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Note effects on other SDKs, fixtures, public surface, or backward compatibility. Indicate if an RFC is required.

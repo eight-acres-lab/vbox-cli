@@ -1,0 +1,63 @@
+name: Bug report
+description: Report a reproducible bcp-sdk bug. Do not report security vulnerabilities here.
+title: "[Bug]: "
+labels: ["type:bugfix"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve bcp-sdk. Do not report security vulnerabilities in public issues; follow SECURITY.md instead.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package
+      options:
+        - "@e8s/bcp-sdk (Node)"
+        - "@e8s/bcp-cli"
+        - "bcp-sdk (Python)"
+        - "bcp-sdk-go"
+        - fixtures
+        - docs
+        - other / not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: e.g. "@e8s/bcp-sdk@0.3.1"
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Node / Python / Go version, OS, architecture.
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal code or commands needed to reproduce the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / output
+      description: Paste relevant logs or error output. Redact secrets and API keys.
+      render: shell

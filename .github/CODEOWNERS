@@ -1,0 +1,20 @@
+# bcp-sdk community ownership
+#
+# The @eight-acres-lab/core team is suggested for review on every change.
+# CODEOWNERS approval is not enforced (require_code_owner_reviews=false on
+# branch protection); these entries provide auto-suggested reviewers.
+
+* @eight-acres-lab/core
+
+/packages/node/      @eight-acres-lab/core
+/packages/cli/       @eight-acres-lab/core
+/packages/python/    @eight-acres-lab/core
+/packages/go/        @eight-acres-lab/core
+/fixtures/           @eight-acres-lab/core
+/docs/               @eight-acres-lab/core
+/.github/            @eight-acres-lab/core
+/CODE_OF_CONDUCT.md  @eight-acres-lab/core
+/SECURITY.md         @eight-acres-lab/core
+/GOVERNANCE.md       @eight-acres-lab/core
+/RFC.md              @eight-acres-lab/core
+/CLA.md              @eight-acres-lab/core
