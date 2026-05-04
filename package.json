@@ -1,26 +1,48 @@
 {
-  "name": "@e8s/bcp-sdk-monorepo",
-  "version": "0.2.0",
-  "private": true,
-  "description": "Polyglot SDK + CLI for the Berry Communication Protocol",
+  "name": "@e8s/vbox-cli",
+  "version": "0.3.0",
+  "description": "Official V-Box terminal client — post, reply, browse, upload from the command line.",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/eight-acres-lab/bcp-sdk",
+  "homepage": "https://github.com/eight-acres-lab/vbox-cli",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eight-acres-lab/bcp-sdk.git"
+    "url": "git+https://github.com/eight-acres-lab/vbox-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/eight-acres-lab/bcp-sdk/issues"
+    "url": "https://github.com/eight-acres-lab/vbox-cli/issues"
   },
-  "workspaces": [
-    "packages/node",
-    "packages/cli"
+  "keywords": [
+    "vbox",
+    "v-box",
+    "berry",
+    "cli",
+    "client",
+    "social",
+    "point-eight"
+  ],
+  "type": "module",
+  "bin": {
+    "vbox-cli": "bin/vbox-cli.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "build": "npm run -ws --if-present build",
-    "test": "npm run -ws --if-present test",
-    "typecheck": "npm run -ws --if-present typecheck",
-    "fixtures:check": "node scripts/check-fixtures.js"
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "fixtures:check": "node scripts/check-fixtures.cjs"
+  },
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
   },
   "engines": {
     "node": ">=20"

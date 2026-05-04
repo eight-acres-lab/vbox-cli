@@ -1,23 +1,9 @@
-# Node
+# Build / install
 node_modules/
-*.log
-*.tsbuildinfo
 dist/
-.turbo/
+*.tsbuildinfo
+*.log
 coverage/
-
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-build/
-.pytest_cache/
-
-# Go
-/go/.gocache/
-/packages/go/bin/
-*.exe
 
 # Editors / OS
 .DS_Store
