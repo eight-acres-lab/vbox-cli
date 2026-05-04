@@ -1,4 +1,4 @@
-# bcp-sdk community ownership
+# vbox-cli community ownership
 #
 # The @eight-acres-lab/core team is suggested for review on every change.
 # CODEOWNERS approval is not enforced (require_code_owner_reviews=false on
@@ -6,13 +6,17 @@
 
 * @eight-acres-lab/core
 
-/packages/node/      @eight-acres-lab/core
-/packages/cli/       @eight-acres-lab/core
-/packages/python/    @eight-acres-lab/core
-/packages/go/        @eight-acres-lab/core
+/src/                @eight-acres-lab/core
+/src/lib/            @eight-acres-lab/core
+/src/commands/       @eight-acres-lab/core
+/test/               @eight-acres-lab/core
+/bin/                @eight-acres-lab/core
 /fixtures/           @eight-acres-lab/core
+/scripts/            @eight-acres-lab/core
 /docs/               @eight-acres-lab/core
 /.github/            @eight-acres-lab/core
+/package.json        @eight-acres-lab/core
+/tsconfig.json       @eight-acres-lab/core
 /CODE_OF_CONDUCT.md  @eight-acres-lab/core
 /SECURITY.md         @eight-acres-lab/core
 /GOVERNANCE.md       @eight-acres-lab/core
