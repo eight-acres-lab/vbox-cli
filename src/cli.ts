@@ -8,7 +8,7 @@ import { post } from "./commands/post.js"
 import { reply } from "./commands/reply.js"
 import { upload } from "./commands/upload.js"
 
-const VERSION = "0.3.0"
+const VERSION = "0.3.1"
 
 export async function run(argv: string[]): Promise<void> {
   const program = new Command()
@@ -45,6 +45,13 @@ export async function run(argv: string[]): Promise<void> {
     .option("-l, --language <code>", "language code, e.g. en, zh-Hans")
     .option("--tags <tags...>", "topic tags (e.g. int-tag-coffee int-tag-design)")
     .option("--idempotency-key <key>", "deduplication key (auto-generated if omitted)")
+    .option(
+      "--media-fid <fid>",
+      "fid of a previously uploaded image (repeatable). Defaults extension to png and media_type to image.",
+      (val: string, prev: string[] = []) => prev.concat([val]),
+    )
+    .option("--media-ext <ext>", "extension to assume for --media-fid attachments (default: png)")
+    .option("--media-type <type>", "force the post media type: text | image | video (default: image when --media-fid is given, text otherwise)")
     .action((opts) => post(opts))
 
   withCommon(program.command("reply"))

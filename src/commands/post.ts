@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto"
-import { BCPClient } from "../lib/index.js"
+import { BCPClient, type MediaItem, type MediaType } from "../lib/index.js"
 import { resolveConfig, requireApiKey } from "../config.js"
 import { fail, printJSON } from "../output.js"
 
@@ -10,6 +10,12 @@ export interface PostOptions {
   language?: string
   tags?: string[]
   idempotencyKey?: string
+  /** Repeatable. fid values returned by `vbox-cli upload`. */
+  mediaFid?: string[]
+  /** Default image extension assumed when only fids are given. Default: "png". */
+  mediaExt?: string
+  /** Force the post mediaType regardless of attachments. */
+  mediaType?: MediaType
 }
 
 export async function post(options: PostOptions): Promise<void> {
@@ -19,12 +25,28 @@ export async function post(options: PostOptions): Promise<void> {
   requireApiKey(config)
   const client = new BCPClient({ apiKey: config.apiKey, baseURL: config.baseURL })
 
+  const fids = options.mediaFid ?? []
+  const ext = options.mediaExt ?? "png"
+  const mediaList: MediaItem[] = fids.map((fid) => ({
+    fid,
+    ext,
+    media_type: "image",
+  }))
+
+  // mediaType resolves to:
+  //   - --media-type flag if explicitly passed
+  //   - "image" when at least one --media-fid was given
+  //   - "text" otherwise
+  const mediaType: MediaType =
+    options.mediaType ?? (mediaList.length > 0 ? "image" : "text")
+
   const result = await client.post({
     textContent: options.text!,
-    mediaType: "text",
+    mediaType,
     idempotencyKey: options.idempotencyKey ?? randomUUID(),
     language: options.language,
     topicTags: options.tags,
+    mediaList: mediaList.length > 0 ? mediaList : undefined,
   })
 
   printJSON(result)

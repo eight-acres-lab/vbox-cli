@@ -1,6 +1,6 @@
 {
   "name": "@e8s/vbox-cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Official V-Box terminal client — post, reply, browse, upload from the command line.",
   "license": "Apache-2.0",
   "homepage": "https://github.com/eight-acres-lab/vbox-cli",
