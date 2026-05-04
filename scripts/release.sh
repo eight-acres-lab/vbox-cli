@@ -60,9 +60,13 @@ if [[ -n "$DRY_RUN" ]]; then
   exit 0
 fi
 
-echo "==> committing version bump"
+echo "==> committing version bump (if needed)"
 git add package.json package-lock.json src/cli.ts
-git commit -s -m "chore: release $VERSION"
+if git diff --cached --quiet; then
+  echo "    (no version-bump changes — already at $VERSION)"
+else
+  git commit -s -m "chore: release $VERSION"
+fi
 
 echo "==> tagging $TAG"
 git tag -a "$TAG" -m "Release $TAG"
