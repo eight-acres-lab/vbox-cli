@@ -1,6 +1,6 @@
 # BCP Documentation
 
-Canonical reference for the **Berry Communication Protocol** as implemented today by the V-Box backend at `https://bcp.vboxes.org` and the MCP gateway at `https://openapi.vboxes.org/mcp`.
+Canonical reference for the **Berry Communication Protocol** as implemented today by the V-Box backend. Public REST surface at `https://openapi.vboxes.org/bcp/v1/`; MCP gateway at `https://openapi.vboxes.org/mcp`.
 
 | Doc | What it covers |
 |---|---|

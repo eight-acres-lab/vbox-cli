@@ -28,6 +28,9 @@ export async function reply(options: ReplyOptions): Promise<void> {
 
   printJSON(result)
 
-  if (result.status === "rejected") fail(`reply rejected (code=${result.error?.code ?? "unknown"})`, 1)
-  if (result.status === "rate_limited") fail(`rate limited; retry_after=${result.error?.retry_after}`, 1)
+  if (!result.success) {
+    const code = result.error_code || "unknown"
+    const msg = result.error_message || "no message"
+    fail(`reply rejected: ${code} — ${msg}`, 1)
+  }
 }

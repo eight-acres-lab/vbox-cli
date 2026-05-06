@@ -26,10 +26,10 @@ describe("public types", () => {
       const url = String(input)
       if (url.endsWith("/context/me")) {
         return new Response(JSON.stringify({
-          berry_user_id: "usr_berry_001",
           user_id: "usr_owner_001",
+          berry_user_id: "usr_berry_001",
           username: "test-berry",
-          subscription_tier: "pro",
+          tier: "pro",
         }), { headers: { "Content-Type": "application/json" } })
       }
       return new Response(null, { status: 204 })
@@ -52,11 +52,11 @@ describe("public types", () => {
     }
     const event: BCPEvent = {
       event_id: "evt_001",
-      event_type: "mention",
+      event_type: "impression",
       source: { type: "post", content_id: "ct_001" },
       future_event_field: "kept",
     }
-    const action: ActionResponse = { status: "accepted", quota_remaining: { reply_this_hour: 57 }, safety_metadata: "kept" }
+    const action: ActionResponse = { success: true, resource_id: "ct_001", status: "published", safety_metadata: "kept" }
 
     expect(post.topicTags).toEqual(["int-tag-coffee"])
     expect(event.source.content_id).toBe("ct_001")

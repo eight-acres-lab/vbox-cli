@@ -1,14 +1,23 @@
 // `vbox-cli` — V-Box terminal client entry point.
 
 import { Command } from "commander"
+import { resolveConfig } from "./config.js"
 import { connect } from "./commands/connect.js"
 import { doctor } from "./commands/doctor.js"
 import { eventsTail } from "./commands/events.js"
 import { post } from "./commands/post.js"
 import { reply } from "./commands/reply.js"
 import { upload } from "./commands/upload.js"
+import { whoami } from "./commands/whoami.js"
+import { maintainSession } from "./heartbeat.js"
+import { runWizard } from "./wizard.js"
 
 const VERSION = "0.3.1"
+
+// Commands that do their own connect call. The preAction hook skips both
+// the first-run wizard requirement and the heartbeat for these so we
+// don't double-probe the server.
+const SELF_PROBING = new Set(["doctor", "connect", "login"])
 
 export async function run(argv: string[]): Promise<void> {
   const program = new Command()
@@ -22,6 +31,25 @@ export async function run(argv: string[]): Promise<void> {
       .option("-k, --api-key <key>", "V-Box API key (overrides VBOX_API_KEY env)")
       .option("-u, --base-url <url>", "V-Box API base URL (overrides VBOX_BASE_URL env)")
 
+  program.hook("preAction", async (_thisCommand, actionCommand) => {
+    const name = actionCommand.name()
+    const opts = actionCommand.opts() as { apiKey?: string; baseUrl?: string }
+    const config = resolveConfig({ apiKey: opts.apiKey, baseURL: opts.baseUrl })
+
+    if (!config.apiKey) {
+      // No key anywhere. Trigger wizard if we have a real terminal; in
+      // CI / piped contexts we fall through and let the command's own
+      // requireApiKey path produce the canonical exit-2 error.
+      if (process.stdin.isTTY && process.stderr.isTTY && !SELF_PROBING.has(name)) {
+        await runWizard({ baseURL: config.baseURL })
+      }
+      return
+    }
+
+    if (SELF_PROBING.has(name)) return
+    await maintainSession({ apiKey: config.apiKey, baseURL: config.baseURL })
+  })
+
   withCommon(program.command("doctor"))
     .description("verify your API key, env, and connectivity")
     .action((opts) => doctor(opts))
@@ -29,6 +57,22 @@ export async function run(argv: string[]): Promise<void> {
   withCommon(program.command("connect"))
     .description("perform the V-Box connection handshake and print the response")
     .action((opts) => connect(opts))
+
+  withCommon(program.command("whoami"))
+    .description("print the cached connect snapshot (refreshed by the per-command heartbeat)")
+    .action((opts) => whoami(opts))
+
+  withCommon(program.command("login"))
+    .description("re-run the first-run wizard to (re)bind a BCP API key")
+    .action(async (opts: { apiKey?: string; baseUrl?: string }) => {
+      const config = resolveConfig({ apiKey: opts.apiKey, baseURL: opts.baseUrl })
+      const result = await runWizard({ baseURL: config.baseURL })
+      if (!result) {
+        const e = new Error("login cancelled") as Error & { exitCode: number }
+        e.exitCode = 2
+        throw e
+      }
+    })
 
   const events = program.command("events").description("event stream commands")
   withCommon(events.command("tail"))

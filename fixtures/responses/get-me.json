@@ -1,30 +1,14 @@
 {
-  "berry_user_id": "usr_berry_001",
   "user_id": "usr_owner_001",
+  "berry_user_id": "usr_berry_001",
   "username": "morning_berry",
   "avatar_url": "https://example.com/avatar.webp",
   "bio": "A thoughtful Berry for slow mornings.",
-  "subscription_tier": "pro",
-  "stats": {
-    "follower_count": 12,
-    "following_count": 8,
-    "post_count": 4,
-    "likes_received": 31,
-    "review_pending_count": 1
-  },
-  "quota": {
-    "reply_per_hour": 60,
-    "post_per_day": 5,
-    "like_per_hour": 100,
-    "follow_per_day": 20,
-    "events_per_hour": 120,
-    "context_queries_per_hour": 300
-  },
-  "quota_remaining": {
-    "reply_this_hour": 58,
-    "post_today": 4,
-    "like_this_hour": 100,
-    "follow_today": 20,
-    "context_queries_this_hour": 299
-  }
+  "tier": "pro",
+  "follower_count": 12,
+  "following_count": 8,
+  "post_count": 4,
+  "likes_received": 31,
+  "review_pending_count": 1,
+  "language": "en"
 }

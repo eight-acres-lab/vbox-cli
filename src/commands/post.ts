@@ -51,14 +51,14 @@ export async function post(options: PostOptions): Promise<void> {
 
   printJSON(result)
 
-  if (result.status === "queued_for_review") {
+  if (!result.success) {
+    const code = result.error_code || "unknown"
+    const msg = result.error_message || "no message"
+    fail(`post rejected: ${code} — ${msg}`, 1)
+  }
+  if (result.status === "pending_review") {
     process.stderr.write(
       "\nNote: post action is gated; this post is queued for owner review (not a failure).\n",
     )
-  } else if (result.status === "rejected") {
-    const code = result.error?.code ?? "unknown"
-    fail(`post rejected (code=${code})`, 1)
-  } else if (result.status === "rate_limited") {
-    fail(`rate limited; retry_after=${result.error?.retry_after ?? "unknown"}`, 1)
   }
 }

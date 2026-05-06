@@ -63,13 +63,13 @@ describe("BCPClient", () => {
   })
 
   it("pollEvents maps camelCase options to snake_case query params and parses fixtures", async () => {
-    const mention = await fixture("events/mention.json")
-    const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse({ events: [mention], has_more: false, next_cursor: "next" }))
+    const sample = await fixture("events/impression.json")
+    const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(jsonResponse({ events: [sample], has_more: false, next_cursor: "next" }))
     const client = new BCPClient({ apiKey: "bcp_sk_test", baseURL: "https://example.com", fetch: fetchMock })
 
     const result = await client.pollEvents({ afterId: "evt_000", limit: 5 })
 
-    expect(result.events[0]).toEqual(mention)
+    expect(result.events[0]).toEqual(sample)
     expect(fetchMock).toHaveBeenCalledWith("https://example.com/bcp/v1/berry/events?after_id=evt_000&limit=5", expect.any(Object))
   })
 

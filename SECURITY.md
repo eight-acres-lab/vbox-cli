@@ -17,7 +17,7 @@ This policy covers the SDK and CLI code in this repository (`packages/node`, `pa
 
 It does **not** cover:
 
-- The BCP server itself (`bcp.vboxes.org`) — report those to the same email but mark the subject `[bcp-server]`.
+- The BCP server itself (`openapi.vboxes.org`) — report those to the same email but mark the subject `[bcp-server]`.
 - The V-Box mobile/web applications — see `https://pointeight.ai/legal/` for the V-Box safety contact.
 - Vulnerabilities in third-party agents built on top of these SDKs — those are the responsibility of the agent operator.
 

@@ -8,7 +8,7 @@ import type { BCPEvent } from "../../src/lib/types.js"
 const fixturesRoot = join(import.meta.dirname, "..", "..", "fixtures")
 
 async function loadEvent(): Promise<BCPEvent> {
-  return JSON.parse(await readFile(join(fixturesRoot, "events", "mention.json"), "utf8")) as BCPEvent
+  return JSON.parse(await readFile(join(fixturesRoot, "events", "impression.json"), "utf8")) as BCPEvent
 }
 
 function jsonResponse(payload: unknown, status = 200): Response {
@@ -26,7 +26,7 @@ describe("BerryAgent", () => {
     const agent = new BerryAgent(client)
 
     const seen: string[] = []
-    agent.on("mention", (e) => { seen.push(e.event_id) })
+    agent.on("impression", (e) => { seen.push(e.event_id) })
 
     await agent.pollOnce()
 
@@ -50,7 +50,7 @@ describe("BerryAgent", () => {
 
     const client = new BCPClient({ apiKey: "bcp_sk_test", baseURL: "https://example.com", fetch: fetchMock })
     const agent = new BerryAgent(client)
-    agent.on("mention", () => { throw new Error("boom") })
+    agent.on("impression", () => { throw new Error("boom") })
 
     await expect(agent.pollOnce()).rejects.toThrow("boom")
 
@@ -71,7 +71,7 @@ describe("BerryAgent", () => {
 
     const client = new BCPClient({ apiKey: "bcp_sk_test", baseURL: "https://example.com", fetch: fetchMock })
     const agent = new BerryAgent(client)
-    agent.on("followed", () => { /* won't match a mention event */ })
+    agent.on("like", () => { /* won't match an impression event */ })
 
     await agent.pollOnce()
 
@@ -93,7 +93,7 @@ describe("BerryAgent", () => {
     const client = new BCPClient({ apiKey: "bcp_sk_test", baseURL: "https://example.com", fetch: fetchMock })
     const agent = new BerryAgent(client)
 
-    agent.on("mention", async (_event, ctx) => {
+    agent.on("impression", async (_event, ctx) => {
       await ctx.ackEvent({ status: "skipped", reason: "handled manually" })
     })
 
@@ -114,12 +114,12 @@ describe("BerryAgent", () => {
     const event = await loadEvent()
     const fetchMock = vi.fn<typeof fetch>()
       .mockResolvedValueOnce(jsonResponse({ events: [event], has_more: false }))
-      .mockResolvedValueOnce(jsonResponse({ status: "accepted" }))
+      .mockResolvedValueOnce(jsonResponse({ success: true, resource_id: "cmt_001", status: "" }))
       .mockResolvedValueOnce(jsonResponse({})) // auto-ack
 
     const client = new BCPClient({ apiKey: "bcp_sk_test", baseURL: "https://example.com", fetch: fetchMock })
     const agent = new BerryAgent(client)
-    agent.on("mention", async (_event, ctx) => {
+    agent.on("impression", async (_event, ctx) => {
       await ctx.reply({ textContent: "hello" })
     })
 

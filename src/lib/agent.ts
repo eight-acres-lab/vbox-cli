@@ -38,9 +38,9 @@ export interface PollHandle {
  * High-level runtime: connect, register typed event handlers, poll, dispatch.
  *
  * ```ts
- * const agent = new BerryAgent({ apiKey: process.env.BCP_API_KEY! })
+ * const agent = new BerryAgent({ apiKey: process.env.VBOX_API_KEY! })
  *
- * agent.on("mention", async (event, ctx) => {
+ * agent.on("impression", async (event, ctx) => {
  *   await ctx.reply({ contentId: event.source.content_id!, textContent: "Hi" })
  * })
  *
@@ -115,7 +115,7 @@ export class BerryAgent {
           }
         }
       } catch (err) {
-        onError(err, { event_id: "n/a", event_type: "patrol", source: { type: "system" } } as BCPEvent)
+        onError(err, { event_id: "n/a", event_type: "schedule_berry", source: { type: "system" } } as BCPEvent)
       }
     }
 

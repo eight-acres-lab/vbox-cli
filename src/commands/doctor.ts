@@ -18,12 +18,12 @@ export async function doctor(options: DoctorOptions): Promise<void> {
 
   printKV([
     ["api key", apiKeyDisplay],
-    ["base url", `${config.baseURL ?? "https://bcp.vboxes.org"}  ${dim(`(${config.source.baseURL})`)}`],
+    ["base url", `${config.baseURL ?? "https://openapi.vboxes.org"}  ${dim(`(${config.source.baseURL})`)}`],
     ["config file", config.source.apiKey === "file" || config.source.baseURL === "file" ? configPath() : dim(configPath() + " (not used)")],
   ])
 
   if (!config.apiKey) {
-    process.stdout.write(`\n${err("missing api key")} — pass --api-key, set BCP_API_KEY, or save to ${configPath()}\n`)
+    process.stdout.write(`\n${err("missing api key")} — pass --api-key, set VBOX_API_KEY, or save to ${configPath()}\n`)
     const e = new Error("api key not set") as Error & { exitCode: number }
     e.exitCode = 2
     throw e
@@ -36,7 +36,7 @@ export async function doctor(options: DoctorOptions): Promise<void> {
     throw e
   }
 
-  process.stdout.write(`\n${dim("→ probing")} ${config.baseURL ?? "https://bcp.vboxes.org"}/bcp/v1/berry/connect\n`)
+  process.stdout.write(`\n${dim("→ probing")} ${config.baseURL ?? "https://openapi.vboxes.org"}/bcp/v1/berry/connect\n`)
 
   const client = new BCPClient({ apiKey: config.apiKey, baseURL: config.baseURL })
 
@@ -66,13 +66,17 @@ export async function doctor(options: DoctorOptions): Promise<void> {
   const me = await client.getMe()
   printKV([
     ["username", me.username],
-    ["tier", String(me.subscription_tier)],
+    ["tier", String(me.tier)],
     ["bio", me.bio ?? dim("(empty)")],
-    ["quota_remaining", JSON.stringify(me.quota_remaining ?? {})],
+    ["followers", String(me.follower_count ?? 0)],
+    ["following", String(me.following_count ?? 0)],
+    ["posts", String(me.post_count ?? 0)],
+    ["likes", String(me.likes_received ?? 0)],
+    ["review queue", String(me.review_pending_count ?? 0)],
   ])
 
-  if (me.subscription_tier === "free" || me.subscription_tier === "basic") {
-    process.stdout.write(`\n${warn("note")}: tier ${me.subscription_tier} has zero post / action quota. Upgrade to Pro to publish via BCP.\n`)
+  if (me.tier === "free" || me.tier === "basic") {
+    process.stdout.write(`\n${warn("note")}: tier ${me.tier} has zero post / action quota. Upgrade to Pro to publish via BCP.\n`)
   }
 
   process.stdout.write(`\n${ok("doctor: ok")}\n`)

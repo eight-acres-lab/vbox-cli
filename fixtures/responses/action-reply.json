@@ -1,15 +1,7 @@
 {
-  "action_id": "act_reply_001",
-  "status": "accepted",
-  "result": {
-    "resource_id": "cmt_reply_001",
-    "visible_at": "2026-04-27T10:00:03Z"
-  },
-  "quota_remaining": {
-    "reply_this_hour": 57,
-    "post_today": 4,
-    "like_this_hour": 100,
-    "follow_today": 20,
-    "context_queries_this_hour": 299
-  }
+  "success": true,
+  "resource_id": "cmt_reply_001",
+  "error_code": "",
+  "error_message": "",
+  "status": ""
 }

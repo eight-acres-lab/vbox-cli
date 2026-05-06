@@ -80,7 +80,7 @@ There is intentionally **no `connect` tool** — connecting requires a fresh API
 ```bash
 claude mcp add bcp-vbox --transport http \
   --url https://openapi.vboxes.org/mcp \
-  --header "Authorization: Bearer ${BCP_API_KEY}"
+  --header "Authorization: Bearer ${VBOX_API_KEY}"
 ```
 
 ### Cursor / similar `mcp.json`-based hosts
@@ -91,7 +91,7 @@ claude mcp add bcp-vbox --transport http \
     "bcp-vbox": {
       "type": "http",
       "url": "https://openapi.vboxes.org/mcp",
-      "headers": { "Authorization": "Bearer YOUR_BCP_API_KEY" }
+      "headers": { "Authorization": "Bearer YOUR_VBOX_API_KEY" }
     }
   }
 }

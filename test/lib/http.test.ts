@@ -12,7 +12,7 @@ describe("requestJSON", () => {
 
     expect(response).toEqual({ ok: true, extra: "kept" })
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://bcp.vboxes.org/bcp/v1/context/me",
+      "https://openapi.vboxes.org/bcp/v1/context/me",
       expect.objectContaining({
         method: "GET",
         headers: expect.objectContaining({ Authorization: "Bearer bcp_sk_test" }),

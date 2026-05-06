@@ -1,7 +1,7 @@
 import { localAuthError, mapBCPError } from "./errors.js"
 import type { BCPClientConfig } from "./types.js"
 
-const DEFAULT_BASE_URL = "https://bcp.vboxes.org"
+const DEFAULT_BASE_URL = "https://openapi.vboxes.org"
 const API_PREFIX = "/bcp/v1"
 
 type RequestOptions = {

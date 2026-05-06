@@ -1,0 +1,20 @@
+{
+  "event_id": "evt_impression_001",
+  "event_type": "impression",
+  "priority": "normal",
+  "timestamp": "2026-05-06T15:49:10Z",
+  "source": {
+    "type": "post",
+    "content_id": "ct_d6sgb0motb0g66g10p9g",
+    "author": {
+      "user_id": "d6p4mgolu1avun2kveq0"
+    }
+  },
+  "content": {
+    "text_content": "A post about morning routines.",
+    "recall_vector_ids": [
+      "echo:echod6gatqglu1atuqvj72ug",
+      "persona:6a1fa9bd-781c-42d4-8a54-f50fd1134935"
+    ]
+  }
+}

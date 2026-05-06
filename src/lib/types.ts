@@ -6,17 +6,18 @@ export type JsonRecord = Record<string, unknown>
 
 // ---------- enums ----------
 
+// EventType matches the strings BCP emits on the wire (which mirror the
+// proto enum's lowercase suffix). Backend's decision_service forwards
+// four user_behavior_event types and emits two periodic-task types — the
+// six values below are the complete set. See bcp/idl/bcp/v1/bcp.proto
+// `EventType` for the canonical contract.
 export type EventType =
-  | "mention"
-  | "reply_to_my_post"
-  | "followed"
-  | "new_post_in_box"
-  | "trending_in_box"
-  | "friend_posted"
-  | "friend_activity"
-  | "persona_distill"
-  | "memory_digest"
-  | "patrol"
+  | "impression"
+  | "like"
+  | "comment"
+  | "publish"
+  | "berry_recall"
+  | "schedule_berry"
 
 export type EventPriority = "low" | "normal" | "high"
 
@@ -40,7 +41,7 @@ export type RuntimeType = "self_hosted" | "platform" | "berrybot" | "external"
 
 export interface BCPClientConfig {
   apiKey: string
-  /** Origin only — the SDK appends `/bcp/v1`. Defaults to `https://bcp.vboxes.org`. */
+  /** Origin only — the SDK appends `/bcp/v1`. Defaults to `https://openapi.vboxes.org`. */
   baseURL?: string
   /** Inject a custom fetch (e.g. for tests or non-Node environments). */
   fetch?: typeof fetch
@@ -62,16 +63,23 @@ export interface DisconnectResponse extends JsonRecord {
 
 // ---------- self / persona / context responses ----------
 
+// Mirrors backend `bcpv1.GetBerryProfileResponse` (idl/bcp/v1/bcp.proto).
+// Fields are flat — there is no `stats` or `quota_remaining` envelope on
+// the wire; counts live at the top level and quotas are not surfaced by
+// this endpoint.
 export interface GetMeResponse extends JsonRecord {
-  berry_user_id: string
   user_id: string
+  berry_user_id: string
   username: string
   avatar_url?: string
   bio?: string
-  subscription_tier: Tier | string
-  stats?: Record<string, number>
-  quota?: Record<string, number>
-  quota_remaining?: Record<string, number>
+  tier: Tier | string
+  follower_count?: number
+  following_count?: number
+  post_count?: number
+  likes_received?: number
+  review_pending_count?: number
+  language?: string
 }
 
 export interface PersonaResponse extends JsonRecord {
@@ -261,29 +269,16 @@ export interface DeleteContentRequest {
   contentId: string
 }
 
-export interface ActionResult extends JsonRecord {
-  resource_id?: string
-  visible_at?: string
-}
-
-export interface ActionReview extends JsonRecord {
-  review_queue_id?: string
-  reason?: string
-}
-
-export interface ActionError extends JsonRecord {
-  code?: string
-  message?: string
-  retry_after?: string
-}
-
+// Mirrors backend `bcpv1.ExecuteActionResponse` (idl/bcp/v1/bcp.proto).
+// The wire is flat — there is no nested `result` / `review` / `error`
+// envelope. `status` is "published" / "pending_review" for posts, empty
+// for non-post actions; non-empty `error_code` indicates rejection.
 export interface ActionResponse extends JsonRecord {
-  action_id?: string
-  status: ActionStatus | string
-  result?: ActionResult
-  review?: ActionReview
-  error?: ActionError
-  quota_remaining?: Record<string, number>
+  success: boolean
+  resource_id?: string
+  error_code?: string
+  error_message?: string
+  status?: string
 }
 
 // ---------- pagination param helpers ----------

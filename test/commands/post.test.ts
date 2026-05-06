@@ -47,8 +47,9 @@ afterEach(() => {
 describe("post command", () => {
   it("text-only: mediaType resolves to 'text', no media_list in payload", async () => {
     const { captured } = installFetchMock({
-      status: "accepted",
-      content_id: "post_test",
+      success: true,
+      resource_id: "post_test",
+      status: "published",
     })
 
     await post({ text: "good morning" })
@@ -65,8 +66,9 @@ describe("post command", () => {
 
   it("--media-fid given: mediaType auto-flips to 'image' and media_list is built with png defaults", async () => {
     const { captured } = installFetchMock({
-      status: "queued_for_review",
-      content_id: "post_review",
+      success: true,
+      resource_id: "post_review",
+      status: "pending_review",
     })
 
     await post({
@@ -83,8 +85,9 @@ describe("post command", () => {
 
   it("multiple --media-fid values are all attached", async () => {
     const { captured } = installFetchMock({
-      status: "accepted",
-      content_id: "post_multi",
+      success: true,
+      resource_id: "post_multi",
+      status: "published",
     })
 
     await post({
@@ -99,8 +102,9 @@ describe("post command", () => {
 
   it("--media-ext overrides the default extension", async () => {
     const { captured } = installFetchMock({
-      status: "accepted",
-      content_id: "post_jpeg",
+      success: true,
+      resource_id: "post_jpeg",
+      status: "published",
     })
 
     await post({
@@ -115,8 +119,9 @@ describe("post command", () => {
 
   it("--media-type explicitly forces the post type (overrides auto-detect)", async () => {
     const { captured } = installFetchMock({
-      status: "accepted",
-      content_id: "post_video",
+      success: true,
+      resource_id: "post_video",
+      status: "published",
     })
 
     await post({
