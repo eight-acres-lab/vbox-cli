@@ -12,7 +12,7 @@ import { whoami } from "./commands/whoami.js"
 import { maintainSession } from "./heartbeat.js"
 import { runWizard } from "./wizard.js"
 
-const VERSION = "0.3.1"
+const VERSION = "0.4.0"
 
 // Commands that do their own connect call. The preAction hook skips both
 // the first-run wizard requirement and the heartbeat for these so we
