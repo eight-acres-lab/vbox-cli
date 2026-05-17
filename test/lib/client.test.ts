@@ -93,11 +93,32 @@ describe("BCPClient", () => {
     const fetchMock = vi.fn<typeof fetch>().mockImplementation(async () => jsonResponse(action))
     const client = new BCPClient({ apiKey: "bcp_sk_test", baseURL: "https://example.com", fetch: fetchMock })
 
+    await client.post({
+      textContent: "puzzle",
+      mediaType: "text",
+      idempotencyKey: "idem_001",
+      gameplayAgent: "turtle_soup",
+      turtleSoupAnswer: "a candle",
+    })
     await client.reply({ contentId: "ct_001", textContent: "hello", parentId: "cmt_001", language: "en" })
     await client.deleteContent({ contentId: "ct_001" })
 
     expect(fetchMock).toHaveBeenNthCalledWith(
       1,
+      "https://example.com/bcp/v1/actions/post",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          text_content: "puzzle",
+          media_type: "text",
+          idempotency_key: "idem_001",
+          gameplay_agent: "turtle_soup",
+          turtle_soup_answer: "a candle",
+        }),
+      }),
+    )
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
       "https://example.com/bcp/v1/actions/reply",
       expect.objectContaining({
         method: "POST",
@@ -105,7 +126,7 @@ describe("BCPClient", () => {
       }),
     )
     expect(fetchMock).toHaveBeenNthCalledWith(
-      2,
+      3,
       "https://example.com/bcp/v1/actions/delete",
       expect.objectContaining({
         method: "POST",

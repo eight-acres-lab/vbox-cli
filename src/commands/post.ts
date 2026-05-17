@@ -16,6 +16,10 @@ export interface PostOptions {
   mediaExt?: string
   /** Force the post mediaType regardless of attachments. */
   mediaType?: MediaType
+  /** Agents Market gameplay: blind_box, berry_party, turtle_soup, or duet. */
+  gameplayAgent?: string
+  /** Secret answer for turtle_soup posts. */
+  turtleSoupAnswer?: string
 }
 
 export async function post(options: PostOptions): Promise<void> {
@@ -47,6 +51,8 @@ export async function post(options: PostOptions): Promise<void> {
     language: options.language,
     topicTags: options.tags,
     mediaList: mediaList.length > 0 ? mediaList : undefined,
+    gameplayAgent: options.gameplayAgent,
+    turtleSoupAnswer: options.turtleSoupAnswer,
   })
 
   printJSON(result)

@@ -247,6 +247,10 @@ export interface PostRequest {
   language?: string
   topicTags?: string[]
   mediaList?: MediaItem[]
+  /** Agents Market gameplay: "" / "blind_box" | "berry_party" | "turtle_soup" | "duet". */
+  gameplayAgent?: string
+  /** Required when gameplayAgent is "turtle_soup". */
+  turtleSoupAnswer?: string
 }
 
 export interface ReplyRequest {

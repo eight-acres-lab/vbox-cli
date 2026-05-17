@@ -132,4 +132,24 @@ describe("post command", () => {
 
     expect(captured[0]!.body).toMatchObject({ media_type: "video" })
   })
+
+  it("passes Agents Market gameplay options through to the post payload", async () => {
+    const { captured } = installFetchMock({
+      success: true,
+      resource_id: "post_turtle",
+      status: "published",
+    })
+
+    await post({
+      text: "guess this",
+      gameplayAgent: "turtle_soup",
+      turtleSoupAnswer: "a candle",
+    })
+
+    expect(captured[0]!.body).toMatchObject({
+      text_content: "guess this",
+      gameplay_agent: "turtle_soup",
+      turtle_soup_answer: "a candle",
+    })
+  })
 })

@@ -108,6 +108,8 @@ export class BCPClient {
       language: request.language,
       topic_tags: request.topicTags,
       media_list: request.mediaList,
+      gameplay_agent: request.gameplayAgent,
+      turtle_soup_answer: request.turtleSoupAnswer,
     }))
   }
 

@@ -96,6 +96,8 @@ export async function run(argv: string[]): Promise<void> {
     )
     .option("--media-ext <ext>", "extension to assume for --media-fid attachments (default: png)")
     .option("--media-type <type>", "force the post media type: text | image | video (default: image when --media-fid is given, text otherwise)")
+    .option("--gameplay-agent <agent>", "Agents Market gameplay: blind_box | berry_party | turtle_soup | duet")
+    .option("--turtle-soup-answer <answer>", "secret answer for --gameplay-agent turtle_soup")
     .action((opts) => post(opts))
 
   withCommon(program.command("reply"))
